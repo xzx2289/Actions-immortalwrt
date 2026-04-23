@@ -4,10 +4,15 @@
 
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
+#include <dt-bindings/leds/common.h>
 
 / {
 	compatible = "hilink,hlk-7628d", "mediatek,mt7628an-soc";
 	model = "HILINK HLK-7628D";
+
+	chosen {
+		bootargs = "console=ttyS0,57600";
+	};
 
 	keys {
 		compatible = "gpio-keys";
@@ -62,8 +67,8 @@
 				reg = <0x40000 0x10000>;
 				read-only;
 
-				nvmem-cells {
-					compatible = "nvmem-cells";
+				nvmem-layout {
+					compatible = "fixed-layout";
 					#address-cells = <1>;
 					#size-cells = <1>;
 
@@ -71,8 +76,8 @@
 						reg = <0x0 0x400>;
 					};
 
-					macaddr_factory_4: macaddr@4 {
-						reg = <0x4 0x6>;
+					macaddr_factory_28: macaddr@28 {
+						reg = <0x28 0x6>;
 					};
 				};
 			};
@@ -87,16 +92,13 @@
 };
 
 &ethernet {
-	nvmem-cells = <&macaddr_factory_4>;
+	nvmem-cells = <&macaddr_factory_28>;
 	nvmem-cell-names = "mac-address";
-};
-
-&esw {
-	mediatek,portmap = <0x3e>;
 };
 
 &wmac {
 	status = "okay";
+
 	nvmem-cells = <&eeprom_factory_0>;
 	nvmem-cell-names = "eeprom";
 };

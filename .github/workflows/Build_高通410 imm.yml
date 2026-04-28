@@ -176,11 +176,11 @@ jobs:
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
-    - name: Test glib2 and libmbim
+    - name: Test glib2 and libmbim only
       run: |
         cd openwrt
-        make package/feeds/packages/glib2/compile -j$(nproc) || exit 1
-        make package/feeds/packages/libmbim/compile -j$(nproc) || exit 1
+        make package/feeds/packages/glib2/compile -j$(nproc) || make package/feeds/packages/glib2/compile -j1 V=s || exit 1
+        make package/feeds/packages/libmbim/compile -j$(nproc) || make package/feeds/packages/libmbim/compile -j1 V=s || exit 1
 
     - name: Compile the firmware
       id: compile

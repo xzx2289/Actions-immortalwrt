@@ -134,8 +134,12 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a -f
 
-        echo "📌 Latest packages feed commit:"
-        git -C feeds/packages log -1 --oneline
+        echo "📌 Local packages feed:"
+        git -C feeds/packages log -1 --format="%H %ci %s"
+
+        echo "📌 Remote packages HEAD:"
+        git ls-remote https://github.com/immortalwrt/packages HEAD
+
 
         
     - name: Load custom DIY_P2_SH

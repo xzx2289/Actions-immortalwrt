@@ -247,7 +247,6 @@ jobs:
       id: config
       run: |
         cd openwrt
-        echo "CONFIG_CCACHE=y" >> .config
         make defconfig
         
     - name: 自动上传最新源码生成.config编译配置

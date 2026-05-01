@@ -1,1 +1,16 @@
+#!/bin/sh
+# 410 no-modem runtime guard
+# 这个脚本只负责运行时禁用 modem 用户态服务；真正释放内存靠 DTS 里的 mpss_mem disabled/size 0。
 
+log() { logger -t 410-no-modem "$*" 2>/dev/null || true; }
+log "disable modem userspace services"
+
+for svc in modemmanager ModemManager qmi qmi-network qmi-proxy mbim umbim ofono; do
+	if [ -x "/etc/init.d/$svc" ]; then
+		/etc/init.d/$svc stop 2>/dev/null || true
+		/etc/init.d/$svc disable 2>/dev/null || true
+	fi
+done
+
+# 不卸载/禁用 wcnss/prima/wlan，避免内置 Wi-Fi 失效。
+exit 0
